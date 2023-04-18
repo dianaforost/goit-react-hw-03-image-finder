@@ -1,3 +1,4 @@
+import css from './styles.module.css'
 export const App = () => {
   return (
     <div
@@ -10,7 +11,7 @@ export const App = () => {
         color: '#010101'
       }}
     >
-      React homework template
+      <p className={css.SearchFormButtonLabel}>React homework template</p>
     </div>
   );
 };
