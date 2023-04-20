@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import { MutatingDots } from  'react-loader-spinner';
 import css from './styles.module.css';
 import fetchImages from './api/api'
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
+import Loader from './Loader/Loader'
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 export class App extends Component {
   state = {
@@ -74,19 +74,7 @@ export class App extends Component {
         )}
         
         <ImageGallery images={this.state.images} query={this.state.query}/>
-        {this.state.onLoad === true && <div className={css.container}>
-        <MutatingDots 
-          height="100"
-          width="100"
-          color="#4fa94d"
-          secondaryColor= '#4fa94d'
-          radius='12.5'
-          ariaLabel="mutating-dots-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-        />
-        </div>}
+        {this.state.onLoad === true && <Loader />}
         {this.state.images.length > 0 && !this.state.onLoad && this.state.hasImages && <Button onClick={this.onLoadMore}/>}
       </div>
     );
