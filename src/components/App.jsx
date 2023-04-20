@@ -20,6 +20,10 @@ export class App extends Component {
     }
     else{
       try {
+        this.setState({
+          onLoad: true,
+        })
+
         const { hits } = await fetchImages(query, 1);
         if (hits.length < 1) {
           return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
@@ -31,7 +35,12 @@ export class App extends Component {
         });
       } catch (error) {
         console.log("Smth wrong with App fetch", error);
-      }
+      }finally {
+        this.setState({
+          onLoad: false,
+        })
+        // console.log(this.state.onLoad);
+          }
     }
   }
   onLoadMore = async () =>{
