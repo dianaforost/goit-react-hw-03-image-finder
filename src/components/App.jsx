@@ -12,7 +12,7 @@ export class App extends Component {
     images:[],
     currentPage: 1,
     onLoad: false,
-    hasImages: true
+    hasImages: false
   }
   handleSubmit = async query =>{
     if(query.trim() === ''){
@@ -25,6 +25,9 @@ export class App extends Component {
         })
 
         const { hits } = await fetchImages(query, 1);
+        if (hits.length > 1) {
+        this.setState({hasImages:true})
+      }
         if (hits.length < 1) {
           return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
       }
@@ -51,7 +54,9 @@ export class App extends Component {
         })
         // console.log(this.state.onLoad);
       const { hits } = await fetchImages(query, currentPage + 1);
-
+      if (hits.length > 1) {
+        this.setState({hasImages:true})
+      }
       if (hits.length < 1) {
         this.setState({hasImages:false})
         return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
