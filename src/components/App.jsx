@@ -29,6 +29,7 @@ export class App extends Component {
         this.setState({hasImages:true})
       }
         if (hits.length < 1) {
+          this.setState({hasImages:false})
           return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
       }
         this.setState({
@@ -42,22 +43,20 @@ export class App extends Component {
         this.setState({
           onLoad: false,
         })
-        // console.log(this.state.onLoad);
           }
     }
   }
-  onLoadMore = async () =>{
-    const {query , currentPage} = this.state;
+  onLoadMore = async()  =>{
+    const { query,currentPage} = this.state;
     try {
         this.setState({
           onLoad: true,
         })
-        // console.log(this.state.onLoad);
       const { hits } = await fetchImages(query, currentPage + 1);
-      if (hits.length > 1) {
+      if (hits.length > 0) {
         this.setState({hasImages:true})
       }
-      if (hits.length < 1) {
+      if (hits.length === 0) {
         this.setState({hasImages:false})
         return Notify.failure('Sorry, there are no images matching your search query. Please try again.')
     }
@@ -65,7 +64,6 @@ export class App extends Component {
         images: [...prevState.images, ...hits],
         currentPage:prevState.currentPage + 1,
       }));
-      // console.log(this.state.currentPage);
 
     } catch (error) {
       console.log("Smth wrong with App fetch", error);
@@ -74,7 +72,6 @@ export class App extends Component {
         this.setState({
           onLoad: false,
         })
-        // console.log(this.state.onLoad);
           }
   }
   render(){
@@ -86,9 +83,8 @@ export class App extends Component {
             <p className={css.Empty}>Empty gallery...</p>
           </div>
         )}
-        
-        <ImageGallery images={this.state.images} query={this.state.query}/>
-        {this.state.onLoad === true && <Loader />}
+        {this.state.hasImages && <ImageGallery images={this.state.images} query={this.state.query}/>}
+        {this.state.onLoad && <Loader />}
         {this.state.images.length > 0 && !this.state.onLoad && this.state.hasImages && <Button onClick={this.onLoadMore}/>}
       </div>
     );
